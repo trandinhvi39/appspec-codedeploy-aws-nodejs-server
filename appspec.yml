@@ -1,0 +1,33 @@
+version: 0.2
+os: linux
+files:
+  - source: /
+    destination: /opt/nodejs_app/current
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: deploy
+    group: deploy
+
+hooks:
+  ApplicationStop:
+    - location: codedeploy/ApplicationStop.sh
+      timeout: 300
+      runas: root
+  BeforeInstall:
+    - location: codedeploy/BeforeInstall.sh
+      timeout: 300
+      runas: deploy
+  AfterInstall:
+    - location: codedeploy/AfterInstall.sh
+      timeout: 900
+      runas: deploy
+  ApplicationStart:
+    - location: codedeploy/ApplicationStart.sh
+      timeout: 300
+      runas: root
+  ValidateService:
+    - location: codedeploy/ValidateService.sh
+      timeout: 300
+      runas: deploy
